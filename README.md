@@ -93,8 +93,7 @@ This section will guide you through setting up the project on your local machine
 
    You'll know the virtual environment is active when you see (.venv) at the beginning of your terminal prompt.
 
-   > [!TIP]
-   > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
+   > [!TIP] > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
 
 4. **Install Dependencies**
 
@@ -173,3 +172,38 @@ If you prefer to build the project from the ground up, follow these steps.
    ```
    pip install -r requirements.txt
    ```
+
+# JAX Concepts
+
+JAX is a powerful library for numerical computation that's particularly well-suited for machine learning. It builds upon the foundation of NumPy, a popular library for working with arrays in Python, but adds some unique features that make it ideal for high-performance computing and machine learning.
+
+## `jax.numpy`
+
+If you've used NumPy before, jax.numpy will feel very familiar. It's a NumPy-like library that provides functions for creating and manipulating arrays, but it's designed to work seamlessly with JAX. You can often replace `import numpy as np` with `import jax.numpy as jnp` and your code will work with JAX arrays.
+
+## Immutability
+
+One of the key differences between JAX arrays and NumPy arrays is that JAX arrays are immutable. This means that once you create a JAX array, you cannot change its values in place. Instead of modifying an array, you create a new array with the desired changes.
+
+```python
+import jax.numpy as jnp
+
+x = jnp.array([1, 2, 3])
+# x[0] = 10  # This would raise an error because you can't modify x in place
+
+y = x.at[0].set(10)  # Correct way: Create a new array y with the updated value
+
+print(x)
+print(y)
+```
+
+This immutability might seem like a limitation at first, but it's a crucial aspect of JAX that enables its powerful transformations like automatic differentiation and just-in-time compilation.
+
+## Device Agnostic
+Code written using JAX can run seamlessly on CPUs, GPUs, and TPUs without requiring significant modifications. JAX abstracts away the details of the underlying hardware, allowing you to write code once and run it anywhere. This is a huge advantage for machine learning, where training on specialized hardware like GPUs and TPUs can lead to substantial speedups.
+
+## `jax.Array`
+In older versions of JAX, there were different types of arrays (like `DeviceArray`, `ndarray`). However, in recent versions, JAX has introduced a unified array type called `jax.Array`. This simplifies things, as you now have a single array type that works across all devices.
+
+# Vectors, Matrices, and Tensors
+Now, let's explore the fundamental data structures used in machine learning: vectors, matrices, and tensors. We'll use jax.numpy to create and manipulate them.
