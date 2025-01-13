@@ -1,0 +1,16 @@
+{
+  "emails": [
+    {
+      "text": "This is a test email to check the spam filter."
+    },
+    {
+      "text": "You have won a lottery! Click here to claim your prize money now!"
+    },
+    {
+      "text": "Hello, just checking in."
+    },
+    {
+      "text": "Urgent, just checking in."
+    }
+  ]
+}

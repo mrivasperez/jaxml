@@ -1,0 +1,36 @@
+{
+  "emails": [
+    {
+      "text": "Hello, this is a normal email.",
+      "is_spam": 0
+    },
+    {
+      "text": "You have won a free vacation! Click here to claim now.",
+      "is_spam": 1
+    },
+    {
+      "text": "Get a discount on your next purchase.",
+      "is_spam": 0
+    },
+    {
+      "text": "Urgent! Your account needs verification. Money is needed.",
+      "is_spam": 1
+    },
+    {
+      "text": "Meeting reminder for tomorrow.",
+      "is_spam": 0
+    },
+    {
+      "text": "Make money fast with this guaranteed method.",
+      "is_spam": 1
+    },
+    {
+      "text": "Here is your free gift.",
+      "is_spam": 1
+    },
+    {
+      "text": "Project update and next steps.",
+      "is_spam": 0
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "age": 2,
+      "height": 85
+    },
+    {
+      "age": 3,
+      "height": 95
+    },
+    {
+      "age": 4,
+      "height": 103
+    },
+    {
+      "age": 5,
+      "height": 110
+    },
+    {
+      "age": 6,
+      "height": 118
+    },
+    {
+      "age": 7,
+      "height": 128
+    },
+    {
+      "age": 8,
+      "height": 135
+    },
+    {
+      "age": 9,
+      "height": 142
+    },
+    {
+      "age": 10,
+      "height": 150
+    }
+  ]
+}
