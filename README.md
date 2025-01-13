@@ -210,3 +210,88 @@ In older versions of JAX, there were different types of arrays (like `DeviceArra
 # Vectors, Matrices, and Tensors
 
 Now, let's explore the fundamental data structures used in machine learning: vectors, matrices, and tensors. We'll use jax.numpy to create and manipulate them.
+
+## Vectors
+
+A vector is simply a list of numbers. You can think of it like a single column in a spreadsheet.
+
+```python
+import jax.numpy as jnp
+
+# Creating a vector (1D tensor)
+vector = jnp.array([1, 2, 3])
+print(vector, type(vector))
+
+# Output
+## [1 2 3] <class 'jax.Array'>
+```
+
+This creates a 1-dimensional JAX array (a vector) containing the numbers 1, 2, and 3. Notice that the output indicates the type is jax.Array.
+
+### Role in Machine Learning
+
+In machine learning, vectors are often used to represent individual data points or features. For instance, in our height prediction project, a single data point could be represented as a vector: [age, height]. Each element in the vector corresponds to a specific feature of the data point (in this case, age and height).
+
+## Matrices
+
+A matrix is a grid of numbers arranged in rows and columns, like a table.
+
+```python
+import jax.numpy as jnp
+
+# Creating a matrix (2D tensor)
+matrix = jnp.array([[1, 2], [3, 4]])
+print(matrix, type(matrix))
+
+# Output
+[[1 2]
+ [3 4]] <class 'jax.Array'>
+```
+
+### Role in Machine Learning
+
+Matrices are commonly used to represent collections of data points or to store model parameters. For example, in our height prediction project, we could store the ages and heights of multiple children in a matrix where each row represents a child (a data point) and each column represents a feature (age or height). In a more complex model, the weights of a neural network are often stored in matrices.
+
+## Tensors
+
+A tensor is a generalization of vectors and matrices to higher dimensions. A vector is a 1-dimensional tensor, a matrix is a 2-dimensional tensor, and you can have tensors with 3, 4, or more dimensions.
+
+A helpful way to visualize a 3D tensor is as a stack of matrices (like a stack of tables).
+
+```
+import jax.numpy as jnp
+
+# Creating a 3D tensor
+tensor_3d = jnp.ones((2, 3, 4))  # A 2x3x4 tensor filled with ones
+print(tensor_3d, type(tensor_3d))
+```
+
+**Output.** This creates a 3-dimensional JAX array with shape (2, 3, 4). You can think of it as 2 matrices stacked on top of each other, where each matrix has 3 rows and 4 columns.
+
+```python
+[[[1. 1. 1. 1.]
+  [1. 1. 1. 1.]
+  [1. 1. 1. 1.]]
+
+ [[1. 1. 1. 1.]
+  [1. 1. 1. 1.]
+  [1. 1. 1. 1.]]] <class 'jax.Array'>
+```
+
+### Role in Machine Learning
+
+Tensors are essential for representing complex, multi-dimensional data. For example, a color image can be represented as a 3D tensor with dimensions (height, width, color_channels), where each color channel (red, green, blue) is a matrix representing the intensity of that color at each pixel. In deep learning, tensors are used extensively to store and process data as it flows through the layers of a neural network.
+
+# Projects
+
+## 1. Predicting Children't Height with Linear Regression
+
+In this project, we'll build our first machine-learning model using a technique called linear regression. We'll use it to predict a child's height based on their age. This is a simple yet powerful example that will introduce you to many fundamental concepts in machine learning.
+
+[Get Started](./height_prediction/README.md)
+
+## 2. Spam Detection with Logistic Regression
+
+In this project, we'll tackle a different type of machine learning problem: classification. Specifically, we'll build a model that can classify emails as either "spam" or "not spam". We'll use a technique called logistic regression for this task.
+
+[Get Started](./spam/README.md)
