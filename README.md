@@ -1,5 +1,5 @@
 > [!NOTE]
-> I wrote this guide for anyone curious about machine learning, even if you're just starting with programming or have an elementary understanding of math. We'll use the powerful JAX library to explore the fundamentals of machine learning, focusing on practical projects that will help you build a solid intuition for how these systems work.
+> I wrote this guide for anyone curious about machine learning, even if you're just starting with programming with Python or have an elementary understanding of math. We'll use the powerful JAX library to explore the fundamentals of machine learning, focusing on practical projects that will help you build a solid intuition for how these systems work.
 
 # What is Machine Learning?
 
@@ -200,10 +200,13 @@ print(y)
 This immutability might seem like a limitation at first, but it's a crucial aspect of JAX that enables its powerful transformations like automatic differentiation and just-in-time compilation.
 
 ## Device Agnostic
+
 Code written using JAX can run seamlessly on CPUs, GPUs, and TPUs without requiring significant modifications. JAX abstracts away the details of the underlying hardware, allowing you to write code once and run it anywhere. This is a huge advantage for machine learning, where training on specialized hardware like GPUs and TPUs can lead to substantial speedups.
 
 ## `jax.Array`
+
 In older versions of JAX, there were different types of arrays (like `DeviceArray`, `ndarray`). However, in recent versions, JAX has introduced a unified array type called `jax.Array`. This simplifies things, as you now have a single array type that works across all devices.
 
 # Vectors, Matrices, and Tensors
+
 Now, let's explore the fundamental data structures used in machine learning: vectors, matrices, and tensors. We'll use jax.numpy to create and manipulate them.
