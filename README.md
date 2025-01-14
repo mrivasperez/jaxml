@@ -318,4 +318,4 @@ In this project, we'll build our first machine-learning model using a technique 
 
 In this project, we'll tackle a different type of machine learning problem: classification. Specifically, we'll build a model that can classify emails as either "spam" or "not spam". We'll use a technique called logistic regression for this task.
 
-[➡️ Get Started](./spam/README.md)
+[➡️ Get Started](./spam_detection/README.md)
