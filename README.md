@@ -1,6 +1,28 @@
 > [!NOTE]
 > I wrote this guide for anyone curious about machine learning, even if you're just starting with programming with Python or have an elementary understanding of math. We'll use the powerful JAX library to explore the fundamentals of machine learning, focusing on practical projects that will help you build a solid intuition for how these systems work.
 
+- [What is Machine Learning?](#what-is-machine-learning)
+- [What You'll Learn](#what-youll-learn)
+- [Why JAX?](#why-jax)
+- [Getting Started](#getting-started)
+  - [Option 1: Clone the Repository (Recommended)](#option-1-clone-the-repository-recommended)
+  - [Option 2: Starting from Scratch](#option-2-starting-from-scratch)
+- [JAX Concepts](#jax-concepts)
+  - [`jax.numpy`](#jaxnumpy)
+  - [Immutability](#immutability)
+  - [Device Agnostic](#device-agnostic)
+  - [`jax.Array`](#jaxarray)
+- [Vectors, Matrices, and Tensors](#vectors-matrices-and-tensors)
+  - [Vectors](#vectors)
+    - [Role in Machine Learning](#role-in-machine-learning)
+  - [Matrices](#matrices)
+    - [Role in Machine Learning](#role-in-machine-learning-1)
+  - [Tensors](#tensors)
+    - [Role in Machine Learning](#role-in-machine-learning-2)
+- [Projects](#projects)
+  - [1. Predicting Children't Height with Linear Regression](#1-predicting-childrent-height-with-linear-regression)
+  - [2. Spam Detection with Logistic Regression](#2-spam-detection-with-logistic-regression)
+
 # What is Machine Learning?
 
 Imagine you want to teach a child to identify different fruits. You wouldn't give them a long list of rules like, "If it's red and round, it's an apple, unless it's small and has a stem, then it's a cherry." Instead, you'd show them many examples of apples, oranges, bananas, and so on, letting them learn the differences on their own. Eventually, they'd be able to identify new fruits they've never seen before.
@@ -51,10 +73,10 @@ This section will guide you through setting up the project on your local machine
 
 1. **Clone the Repository**
 
-   Open your terminal or command prompt and navigate to the directory where you want to store the project. Then, run the following command, replacing [repository URL] with the actual URL of the GitHub repository:
+   Open your terminal or command prompt and navigate to the directory where you want to store the project. Then, run the following command:
 
    ```bash
-   git clone [repository URL]
+   git clone https://github.com/mrivasperez/jaxml.git/
    ```
 
    This will create a new folder with the project's name containing all the files.
@@ -288,10 +310,10 @@ Tensors are essential for representing complex, multi-dimensional data. For exam
 
 In this project, we'll build our first machine-learning model using a technique called linear regression. We'll use it to predict a child's height based on their age. This is a simple yet powerful example that will introduce you to many fundamental concepts in machine learning.
 
-[Get Started](./height_prediction/README.md)
+[➡️ Get Started](./height_prediction/README.md)
 
 ## 2. Spam Detection with Logistic Regression
 
 In this project, we'll tackle a different type of machine learning problem: classification. Specifically, we'll build a model that can classify emails as either "spam" or "not spam". We'll use a technique called logistic regression for this task.
 
-[Get Started](./spam/README.md)
+[➡️ Get Started](./spam/README.md)
