@@ -3,10 +3,10 @@
 
 - [What is Machine Learning?](#what-is-machine-learning)
 - [What You'll Learn](#what-youll-learn)
-- [Why JAX?](#why-jax)
 - [Getting Started](#getting-started)
   - [Option 1: Clone the Repository (Recommended)](#option-1-clone-the-repository-recommended)
   - [Option 2: Starting from Scratch](#option-2-starting-from-scratch)
+- [Why JAX?](#why-jax)
 - [JAX Concepts](#jax-concepts)
   - [`jax.numpy`](#jaxnumpy)
   - [Immutability](#immutability)
@@ -53,17 +53,6 @@ We'll focus on two fundamental machine learning techniques.
      - Evaluating model performance (accuracy)
      - Creating a decision boundary to separate classes
      - Feature engineering (counting spammy keywords)
-
-# Why JAX?
-
-AX is a powerful library that combines the ease of use of NumPy with the ability to automatically calculate gradients (which we'll use for optimization) and run computations on GPUs and TPUs for significant speedups. Throughout this guide, you will learn the basics of using JAX:
-
-- Using jax.numpy for numerical computation.
-- Working with immutable arrays.
-- Understanding JAX's unified array type: jax.Array.
-- Using jax.grad for automatic differentiation, a crucial tool for optimizing machine learning models.
-
-By the end of this guide, you will have a solid understanding of these core machine learning concepts and how to implement them using JAX. You'll also have two working projects to showcase your new skills and a foundation for exploring more advanced machine learning topics.
 
 # Getting Started
 
@@ -194,6 +183,17 @@ If you prefer to build the project from the ground up, follow these steps.
    ```
    pip install -r requirements.txt
    ```
+
+# Why JAX?
+
+JAX is a powerful library that combines the ease of use of NumPy with the ability to automatically calculate gradients (which we'll use for optimization) and run computations on GPUs and TPUs for significant speedups. Throughout this guide, you will learn the basics of using JAX:
+
+- Using jax.numpy for numerical computation.
+- Working with immutable arrays.
+- Understanding JAX's unified array type: jax.Array.
+- Using jax.grad for automatic differentiation, a crucial tool for optimizing machine learning models.
+
+By the end of this guide, you will have a solid understanding of these core machine learning concepts and how to implement them using JAX. You'll also have two working projects to showcase your new skills and a foundation for exploring more advanced machine learning topics.
 
 # JAX Concepts
 
