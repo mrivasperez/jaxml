@@ -105,47 +105,160 @@ Let's break down what this code does:
 
 ## Initializing Parameters
 
+**`weight` and `bias`**: As we discussed earlier, `weight` and `bias` are the parameters of our linear regression model. They determine the slope and y-intercept of the line we're trying to find. We need to initialize these parameters with some starting values before we can begin training.
 
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+**`key = jax.random.PRNGKey(0)`**: This creates a pseudorandom number generator (PRNG) key. Machine learning often involves randomness, such as when initializing parameters or shuffling data. We use a PRNG key to control this randomness. By setting the seed to 0, we ensure that we get the same random numbers each time we run the code, which is important for reproducibility.
 
-## Overview
+**`weight = jax.random.normal(key) and bias = jax.random.normal(key)`**:
 
-This project demonstrates a simple linear regression model built using JAX to predict a child's height based on their age. It serves as a beginner-friendly introduction to core machine learning concepts and JAX's capabilities.
+- We initialize the weight parameter by generating a random number from a normal distribution centered around 0 using jax.random.normal(key). The normal distribution, also known as the bell curve, is a common way to generate random numbers with a specified mean and standard deviation.
+- We do the same for the bias parameter, meaning it's also initialized with a random value drawn from a normal distribution.
+- Initializing the parameters randomly, but close to zero, helps the model start its learning process from a reasonable starting point.
 
-## Project Structure
+## Making Predictions
+
+### `predict` Function
+
+This function takes the weight, bias, and ages as input and calculates the predicted heights using the equation of a line.
+
+```python
+def predict(weight, bias, ages):
+    return weight * ages + bias
+```
+
+This function directly implements the equation height = weight \* age + bias. It multiplies the weight by the ages array and adds the bias, resulting in an array of predicted heights.
+
+## Measuring Error
+
+### What is a Loss Function?
+
+A loss function measures how well our model is performing. It quantifies the difference between the model's predictions and the actual values. The goal of training is to minimize this loss function.
+
+### Mean Squared Error (MSE)
+
+We'll use the Mean Squared Error (MSE) as our loss function. Here's how it works:
+
+1. **Calculate the Error.** For each child, we subtract the actual height from the predicted height. This gives us the error (or residual) for that child.
+2. **Square the Error.** We square each error. This does two things:
+   - It makes all errors positive, so positive and negative errors don't cancel each other out.
+   - It penalizes larger errors more heavily than smaller errors.
+3. **Calculate the Mean.** We take the average (mean) of all the squared errors. This gives us a single number that represents the overall error of our model.
+
+### `mse_loss` Function
+
+```python
+def mse_loss(weight, bias, ages, heights):
+    predictions = predict(weight, bias, ages)
+    return jnp.mean((predictions - heights)**2)
+```
+
+1. **`predictions = predict(weight, bias, ages)`**: This calls our predict function to get the predicted heights for the given ages, weight, and bias.
+2. **`return jnp.mean((predictions - heights)**2)`\*\*: This calculates the MSE:
+   - `(predictions - heights)`: Calculates the difference between the predicted and actual heights.
+   - `(...)**2`: Squares the differences.
+   - `jnp.mean(...)`: Calculates the average of the squared differences.
+
+## Learning from Mistakes
+
+### Gradient Descent
+
+Gradient descent is an optimization algorithm used to find the values of weight and bias that minimize the loss function. It works by iteratively adjusting the parameters in the direction that reduces the loss the most.
+
+### Gradients
+
+The gradient of the loss function tells us the direction of the steepest increase in the loss. Since we want to decrease the loss, we move in the opposite direction of the gradient. You can think of it like rolling a ball downhill – the ball will naturally roll in the direction of the steepest downward slope.
+
+### `loss_grad = jax.grad(mse_loss, argnums=(0, 1))`
+
+This is where JAX's automatic differentiation capabilities shine!
+
+`jax.grad(mse_loss, argnums=(0, 1))` calculates the gradient of the mse_loss function with respect to its first two arguments (weight and bias).
+
+JAX automatically figures out how to calculate these gradients for us, which is a huge advantage.
+
+### `update` Function
+
+```python
+def update(weight, bias, ages, heights, learning_rate):
+    dw, db = loss_grad(weight, bias, ages, heights)
+    weight_new = weight - learning_rate * dw
+    bias_new = bias - learning_rate * db
+    return weight_new, bias_new
+```
+
+1. **`dw, db = loss_grad(weight, bias, ages, heights)`**: This calls the `loss_grad` function (which we created using `jax.grad`) to calculate the gradients of the loss function with respect to weight (dw) and bias (db).
+2. **`weight_new = weight - learning_rate * dw`**: This updates the weight parameter. We subtract a portion of the gradient (dw) from the current weight. The learning_rate controls how big of a step we take in the direction opposite to the gradient.
+3. **`bias_new = bias - learning_rate * db`**: This does the same as above but updates the bias parameter using its gradient (db).
+4. **`return weight_new, bias_new`**: The function returns the updated weight and bias.
+
+## Training the Model
+
+```python
+learning_rate = 0.01
+num_epochs = 1000
+
+ages, heights = load_data_from_json("data.json")
+
+for epoch in range(num_epochs):
+    weight, bias = update(weight, bias, ages, heights, learning_rate)
+    if epoch % 100 == 0:
+        loss = mse_loss(weight, bias, ages, heights)
+        print(f"Epoch {epoch}, Loss: {loss}")
+```
+
+- **`learning_rate = 0.01`**: We set the learning rate to 0.01. This is a hyperparameter that we can tune.
+
+- **`num_epochs = 1000`**: We set the number of epochs to 1000. An epoch is one full pass through the training data.
+
+- **`ages, heights = load_data_from_json("data.json")`**: We load the data from the data.json file.
+
+- **`for epoch in range(num_epochs):`**: This loop iterates for the specified number of epochs.
+
+  - `weight, bias = update(weight, bias, ages, heights, learning_rate)`: In each epoch, we call the update function to update the weight and bias using the gradients and the learning rate.
+
+  - `if epoch % 100 == 0:`: Every 100 epochs, we calculate and print the loss to monitor the training progress.
+
+    - `loss = mse_loss(weight, bias, ages, heights)`: We calculate the loss using the current weight and bias.
+
+    - `print(f"Epoch {epoch}, Loss: {loss}")`: We print the epoch number and the corresponding loss.
+
+## Making Predictions and Visualizing Results
+
+```python
+# 7. Make Predictions
+predicted_heights = predict(weight, bias, ages)
+
+# 8. Visualize the Results
+plt.scatter(ages, heights, label="Actual")
+plt.plot(ages, predicted_heights, label="Predicted", color="red")
+plt.xlabel("Age (years)")
+plt.ylabel("Height (cm)")
+plt.legend()
+plt.show()
+
+print(f"Trained weight: {weight}, Trained bias: {bias}")
+```
+
+- **`predicted_heights = predict(weight, bias, ages)`**: After training, we use the learned weight and bias to make predictions on the same ages data using our predict function.
+
+- **`plt.scatter(ages, heights, label="Actual")`**: This creates a scatter plot of the actual data points, with ages on the x-axis and heights on the y-axis. The label="Actual" is used for the legend.
+
+- **`plt.plot(ages, predicted_heights, label="Predicted", color="red")`**: This plots a line representing the predicted heights. The line connects the predicted heights for each age in our ages data.
+
+- **`plt.xlabel("Age (years)"), plt.ylabel("Height (cm)")`**: These add labels to the x and y axes.
+
+- **`plt.legend()`**: This displays the legend to distinguish between the actual and predicted data.
+
+- **`plt.show()`**: This shows the plot.
+
+- **`print(f"Trained weight: {weight}, Trained bias: {bias}")`**: We print the final trained values of weight and bias.
+
+### Interpreting the Plot
+
+![alt text](Figure_1.png "Title")
+The plot visually shows us how well our model fits the data. The closer the red line (predicted heights) is to the blue dots (actual heights), the better our model is at predicting heights based on age.
+
+# Project Structure
 
 ```
 jaxml/
@@ -154,13 +267,6 @@ jaxml/
     └── data.json      # JSON file containing the age and height dataset.
 ```
 
-- **`main.py`:** Contains the Python code that:
-  - Loads the dataset from `data.json`.
-  - Defines the linear regression model using JAX.
-  - Implements the training loop using gradient descent.
-  - Visualizes the results (actual vs. predicted heights).
-- **`data.json`:** Stores the dataset in JSON format. Each data point is a dictionary with "age" and "height" keys:
-
 ## Running the Code
 
 - Navigate to the `jaxml/height_prediction` directory in your terminal.
@@ -168,12 +274,3 @@ jaxml/
 - The script will print the loss during training at intervals of 100 epochs.
 - After training, it will display a plot showing the actual vs. predicted heights.
 - The trained weight (`w`) and bias (`b`) of the linear model will be printed.
-
-## Concepts Illustrated
-
-- **Linear Regression:** Building a simple linear model to predict a continuous target variable.
-- **JAX:** Using JAX for numerical computation, automatic differentiation, and potential acceleration on GPUs/TPUs.
-- **Gradient Descent:** Implementing a basic gradient descent algorithm to train the model.
-- **Mean Squared Error (MSE):** Using MSE as the loss function to measure the model's performance.
-- **Data Loading from JSON:** Reading data from a JSON file to use in the model.
-- **Visualization:** Using Matplotlib to create a plot of the results.
