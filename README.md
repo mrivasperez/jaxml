@@ -20,7 +20,7 @@
   - [Tensors](#tensors)
     - [Role in Machine Learning](#role-in-machine-learning-2)
 - [Projects](#projects)
-  - [1. Predicting Children't Height with Linear Regression](#1-predicting-childrent-height-with-linear-regression)
+  - [1. Predicting Children's Height with Linear Regression](#1-predicting-childrens-height-with-linear-regression)
   - [2. Spam Detection with Logistic Regression](#2-spam-detection-with-logistic-regression)
 
 # What is Machine Learning?
@@ -306,7 +306,7 @@ Tensors are essential for representing complex, multi-dimensional data. For exam
 
 # Projects
 
-## 1. Predicting Children't Height with Linear Regression
+## 1. Predicting Children's Height with Linear Regression
 
 In this project, we'll build our first machine-learning model using a technique called linear regression. We'll use it to predict a child's height based on their age. This is a simple yet powerful example that will introduce you to many fundamental concepts in machine learning.
 
