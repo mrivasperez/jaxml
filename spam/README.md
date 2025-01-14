@@ -152,7 +152,7 @@ This file contains our training data, which consists of a set of emails. Each em
 
 This function loads the data from data.json, preprocesses it, and converts it into JAX arrays.
 
-```json
+```python
 import re
 
 def load_and_preprocess_data(filepath, spammy_keywords):
