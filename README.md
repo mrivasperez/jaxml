@@ -1,5 +1,5 @@
 > [!NOTE]
-> I wrote this guide for anyone curious about machine learning, even if you're just starting with programming with Python or have an elementary understanding of math. We'll use the powerful JAX library to explore the fundamentals of machine learning, focusing on practical projects that will help you build a solid intuition for how these systems work.
+> I wrote this guide for anyone curious about machine learning, even if you're just starting with programming with Python or have an elementary understanding of math. We'll use the powerful [JAX](https://jax.readthedocs.io/en/latest/) library to explore the fundamentals of machine learning, focusing on practical projects that will help you build a solid intuition for how these systems work.
 
 - [What is Machine Learning?](#what-is-machine-learning)
 - [What You'll Learn](#what-youll-learn)
@@ -186,7 +186,7 @@ If you prefer to build the project from the ground up, follow these steps.
 
 # Why JAX?
 
-JAX is a powerful library that combines the ease of use of NumPy with the ability to automatically calculate gradients (which we'll use for optimization) and run computations on GPUs and TPUs for significant speedups. Throughout this guide, you will learn the basics of using JAX:
+[JAX](https://jax.readthedocs.io/en/latest/) is a powerful library that combines the ease of use of NumPy with the ability to automatically calculate gradients (which we'll use for optimization) and run computations on GPUs and TPUs for significant speedups. Throughout this guide, you will learn the basics of using JAX:
 
 - Using jax.numpy for numerical computation.
 - Working with immutable arrays.
@@ -197,11 +197,11 @@ By the end of this guide, you will have a solid understanding of these core mach
 
 # JAX Concepts
 
-JAX is a powerful library for numerical computation that's particularly well-suited for machine learning. It builds upon the foundation of NumPy, a popular library for working with arrays in Python, but adds some unique features that make it ideal for high-performance computing and machine learning.
+[JAX](https://jax.readthedocs.io/en/latest/) builds upon the foundation of [NumPy](https://numpy.org/), a popular library for working with arrays in Python, but adds some unique features that make it ideal for high-performance computing and machine learning.
 
 ## `jax.numpy`
 
-If you've used NumPy before, jax.numpy will feel very familiar. It's a NumPy-like library that provides functions for creating and manipulating arrays, but it's designed to work seamlessly with JAX. You can often replace `import numpy as np` with `import jax.numpy as jnp` and your code will work with JAX arrays.
+If you've used [NumPy](https://numpy.org/) before, jax.numpy will feel very familiar. It's a NumPy-like library that provides functions for creating and manipulating arrays, but it's designed to work seamlessly with JAX. You can often replace `import numpy as np` with `import jax.numpy as jnp` and your code will work with JAX arrays.
 
 ## Immutability
 
