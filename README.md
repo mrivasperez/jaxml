@@ -25,7 +25,7 @@
 
 # What is Machine Learning?
 
-Imagine you want to teach a child to identify different fruits. You wouldn't give them a long list of rules like, "If it's red and round, it's an apple, unless it's small and has a stem, then it's a cherry." Instead, you'd show them many examples of apples, oranges, bananas, and so on, letting them learn the differences on their own. Eventually, they'd be able to identify new fruits they've never seen before.
+Imagine you want to teach a child to identify different fruits. You wouldn't give them a long list of rules like, "If it's red and round, it's an apple, unless it's small and has a stem, then it's a cherry." Instead, you'd show them many examples of apples, oranges, bananas, and so on, letting them learn the differences on their own.
 
 Machine learning is similar. It's about enabling computers to learn from data without being explicitly programmed with rigid rules. Instead of writing specific instructions for every task, we feed the computer a large amount of data and let it discover patterns, relationships, and insights on its own. This ability to learn from data allows computers to perform tasks that would be incredibly complex or even impossible to program traditionally.
 
@@ -104,8 +104,7 @@ This section will guide you through setting up the project on your local machine
 
    You'll know the virtual environment is active when you see (.venv) at the beginning of your terminal prompt.
 
-> [!TIP] 
-> **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
+> [!TIP] > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
 
 4. **Install Dependencies**
 
@@ -152,8 +151,7 @@ If you prefer to build the project from the ground up, follow these steps.
 
    You'll know the virtual environment is active when you see (.venv) at the beginning of your terminal prompt.
 
-> [!TIP]
-> **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
+> [!TIP] > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
 
 3. **Create `requirements.txt`**
 
@@ -307,6 +305,8 @@ print(tensor_3d, type(tensor_3d))
 Tensors are essential for representing complex, multi-dimensional data. For example, a color image can be represented as a 3D tensor with dimensions (height, width, color_channels), where each color channel (red, green, blue) is a matrix representing the intensity of that color at each pixel. In deep learning, tensors are used extensively to store and process data as it flows through the layers of a neural network.
 
 # Projects
+
+These projects are designed to progressively introduce more advanced concepts while still being manageable for beginners. They provide a good balance of practical application, new concepts, and a reasonable increase in complexity.
 
 ## 1. Predicting Children's Height with Linear Regression
 
