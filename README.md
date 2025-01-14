@@ -104,7 +104,8 @@ This section will guide you through setting up the project on your local machine
 
    You'll know the virtual environment is active when you see (.venv) at the beginning of your terminal prompt.
 
-   > [!TIP] > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
+   > [!TIP]
+   > **Deactivating the Virtual Environment.** When you're finished working on the project, you can deactivate the virtual environment by running `deactivate` in your terminal.
 
 4. **Install Dependencies**
 
