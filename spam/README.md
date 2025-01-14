@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This project builds on concepts from [Project 1: Predicting Children’s Height with Linear Regression](../height_prediction/README.md). If any terms seem unfamiliar, please review [Project 1](../height_prediction//README.md) before proceeding.
+
 - [**Project #2:** Spam Detection with Logistic Regression](#project-2-spam-detection-with-logistic-regression)
   - [Logistic Regression](#logistic-regression)
     - [The Sigmoid Function](#the-sigmoid-function)
