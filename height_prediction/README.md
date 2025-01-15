@@ -1,3 +1,29 @@
+- [**Project 1:** Predicting Children’s Height with Linear Regression](#project-1-predicting-childrens-height-with-linear-regression)
+  - [Linear Regression](#linear-regression)
+    - [The Equation of a Line](#the-equation-of-a-line)
+    - [Finding the Best Line](#finding-the-best-line)
+  - [Loading and Understanding the Data](#loading-and-understanding-the-data)
+    - [`data.json`](#datajson)
+    - [`load_data_from_json` Function](#load_data_from_json-function)
+  - [Initializing Parameters](#initializing-parameters)
+  - [Making Predictions](#making-predictions)
+    - [`predict` Function](#predict-function)
+  - [Measuring Error](#measuring-error)
+    - [What is a Loss Function?](#what-is-a-loss-function)
+    - [Mean Squared Error (MSE)](#mean-squared-error-mse)
+    - [`mse_loss` Function](#mse_loss-function)
+  - [Learning from Mistakes](#learning-from-mistakes)
+    - [Gradient Descent](#gradient-descent)
+    - [Gradients](#gradients)
+    - [`loss_grad = jax.grad(mse_loss, argnums=(0, 1))`](#loss_grad--jaxgradmse_loss-argnums0-1)
+    - [`update` Function](#update-function)
+  - [Training the Model](#training-the-model)
+  - [Making Predictions and Visualizing Results](#making-predictions-and-visualizing-results)
+    - [Interpreting the Plot](#interpreting-the-plot)
+- [Project Structure](#project-structure)
+  - [Running the Code](#running-the-code)
+
+
 # **Project 1:** Predicting Children’s Height with Linear Regression
 
 ## Linear Regression
