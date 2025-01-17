@@ -8,6 +8,7 @@ from sklearn.model_selection import KFold, ParameterGrid
 
 # --- Data Loading ---
 
+
 def load_titanic_data(filepath):
     """Loads the Titanic training data from a CSV file.
 
@@ -35,7 +36,8 @@ def load_titanic_data(filepath):
             jax_data[col_name] = jnp.array(values, dtype=jnp.int32)
         elif col_name in ['Age', 'Fare']:
             # Handle missing values by converting them to NaN
-            values = [float(val) if val != '' else float('nan') for val in values]
+            values = [float(val) if val != '' else float('nan')
+                      for val in values]
             jax_data[col_name] = jnp.array(values, dtype=jnp.float32)
         elif col_name in ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']:
             jax_data[col_name] = values  # Keep string columns as lists
@@ -45,6 +47,7 @@ def load_titanic_data(filepath):
     return jax_data
 
 # --- Data Preprocessing ---
+
 
 def preprocess_data(data):
     """Preprocesses the Titanic data.
@@ -75,19 +78,22 @@ def preprocess_data(data):
         mask = [embarked != '' for embarked in processed_data['Embarked']]
         for key in processed_data:
             if isinstance(processed_data[key], list):
-                processed_data[key] = [item for item, keep in zip(processed_data[key], mask) if keep]
+                processed_data[key] = [item for item, keep in zip(
+                    processed_data[key], mask) if keep]
             elif isinstance(processed_data[key], jnp.ndarray):
                 processed_data[key] = processed_data[key][jnp.array(mask)]
 
     # 2. Convert Categorical Features to Numerical:
     # Sex: Convert 'male' to 0 and 'female' to 1
     if 'Sex' in processed_data and isinstance(processed_data['Sex'], list):
-        processed_data['Sex'] = jnp.array([0 if s == 'male' else 1 for s in processed_data['Sex']])
+        processed_data['Sex'] = jnp.array(
+            [0 if s == 'male' else 1 for s in processed_data['Sex']])
 
     # Embarked: One-hot encode
     if 'Embarked' in processed_data and isinstance(processed_data['Embarked'], list):
         embarked_one_hot = jax.nn.one_hot(
-            jnp.array([0 if x == 'S' else 1 if x == 'C' else 2 for x in processed_data['Embarked']]),
+            jnp.array([0 if x == 'S' else 1 if x ==
+                      'C' else 2 for x in processed_data['Embarked']]),
             num_classes=3
         )
         processed_data['Embarked_S'] = embarked_one_hot[:, 0]
@@ -98,6 +104,7 @@ def preprocess_data(data):
     return processed_data
 
 # --- Feature Engineering ---
+
 
 def extract_titles(names):
     """Extracts titles from passenger names."""
@@ -110,6 +117,7 @@ def extract_titles(names):
             titles.append("")
     return titles
 
+
 def engineer_features(data):
     """
     Engineers new features from the Titanic dataset to improve model accuracy.
@@ -118,13 +126,16 @@ def engineer_features(data):
 
     # --- 1. Cabin Deck ---
     if 'Cabin' in engineered_data and isinstance(engineered_data['Cabin'], list):
-        engineered_data['CabinDeck'] = [c[0] if isinstance(c, str) and c != '' else 'U' for c in engineered_data['Cabin']]
+        engineered_data['CabinDeck'] = [c[0] if isinstance(
+            c, str) and c != '' else 'U' for c in engineered_data['Cabin']]
 
         # One-hot encode CabinDeck
         unique_decks = sorted(list(set(engineered_data['CabinDeck'])))
         deck_to_int = {deck: i for i, deck in enumerate(unique_decks)}
-        deck_indices = jnp.array([deck_to_int[deck] for deck in engineered_data['CabinDeck']])
-        decks_one_hot = jax.nn.one_hot(deck_indices, num_classes=len(unique_decks))
+        deck_indices = jnp.array([deck_to_int[deck]
+                                 for deck in engineered_data['CabinDeck']])
+        decks_one_hot = jax.nn.one_hot(
+            deck_indices, num_classes=len(unique_decks))
 
         for i, deck in enumerate(unique_decks):
             engineered_data[f'CabinDeck_{deck}'] = decks_one_hot[:, i]
@@ -132,13 +143,16 @@ def engineer_features(data):
 
     # --- 2. Ticket Prefix ---
     if 'Ticket' in engineered_data and isinstance(engineered_data['Ticket'], list):
-        engineered_data['TicketPrefix'] = [re.split(r'\s|\.', t)[0] if len(re.split(r'\s|\.', t)) > 1 else 'UNK' for t in engineered_data['Ticket']]
+        engineered_data['TicketPrefix'] = [re.split(r'\s|\.', t)[0] if len(
+            re.split(r'\s|\.', t)) > 1 else 'UNK' for t in engineered_data['Ticket']]
 
         # One-hot encode TicketPrefix (consider only the most frequent prefixes to avoid too many features)
         unique_prefixes = sorted(list(set(engineered_data['TicketPrefix'])))
         prefix_to_int = {prefix: i for i, prefix in enumerate(unique_prefixes)}
-        prefix_indices = jnp.array([prefix_to_int[prefix] for prefix in engineered_data['TicketPrefix']])
-        prefixes_one_hot = jax.nn.one_hot(prefix_indices, num_classes=len(unique_prefixes))
+        prefix_indices = jnp.array([prefix_to_int[prefix]
+                                   for prefix in engineered_data['TicketPrefix']])
+        prefixes_one_hot = jax.nn.one_hot(
+            prefix_indices, num_classes=len(unique_prefixes))
 
         for i, prefix in enumerate(unique_prefixes):
             engineered_data[f'TicketPrefix_{prefix}'] = prefixes_one_hot[:, i]
@@ -146,12 +160,14 @@ def engineer_features(data):
 
     # --- 3. Fare per Person ---
     if 'Fare' in engineered_data and 'FamilySize' in engineered_data:
-        engineered_data['FarePerPerson'] = engineered_data['Fare'] / engineered_data['FamilySize']
+        engineered_data['FarePerPerson'] = engineered_data['Fare'] / \
+            engineered_data['FamilySize']
 
     # --- 4. Is Child/Mother ---
     if 'Age' in engineered_data and 'Sex' in engineered_data and 'Parch' in engineered_data:
         engineered_data['IsChildMother'] = jnp.where(
-            (engineered_data['Age'] < 18) | ((engineered_data['Sex'] == 1) & (engineered_data['Parch'] > 0)), 1, 0
+            (engineered_data['Age'] < 18) | (
+                (engineered_data['Sex'] == 1) & (engineered_data['Parch'] > 0)), 1, 0
         )
 
     # --- 5. Title (Existing Feature - Improved Grouping) ---
@@ -164,8 +180,8 @@ def engineer_features(data):
             "Capt": "Officer",
             "Col": "Officer",
             "Major": "Officer",
-            "Dr": "Rare",  # Keep Dr as a separate category
-            "Rev": "Rare",  # Keep Rev as a separate category
+            "Dr": "Rare",
+            "Rev": "Rare",
             "Jonkheer": "Royalty",
             "Don": "Royalty",
             "Sir": "Royalty",
@@ -176,13 +192,16 @@ def engineer_features(data):
             "Ms": "Miss",
             "Mlle": "Miss"
         }
-        engineered_data['Title'] = [title_mapping.get(t, t) for t in engineered_data['Title']]
+        engineered_data['Title'] = [title_mapping.get(
+            t, t) for t in engineered_data['Title']]
 
         # One-hot encode Titles
         unique_titles = sorted(list(set(engineered_data['Title'])))
         title_to_int = {title: i for i, title in enumerate(unique_titles)}
-        title_indices = jnp.array([title_to_int[title] for title in engineered_data['Title']])
-        titles_one_hot = jax.nn.one_hot(title_indices, num_classes=len(unique_titles))
+        title_indices = jnp.array([title_to_int[title]
+                                  for title in engineered_data['Title']])
+        titles_one_hot = jax.nn.one_hot(
+            title_indices, num_classes=len(unique_titles))
 
         for i, title in enumerate(unique_titles):
             engineered_data[f'Title_{title}'] = titles_one_hot[:, i]
@@ -193,38 +212,48 @@ def engineer_features(data):
         # Adjust age group bins slightly
         age_groups = jnp.digitize(
             engineered_data['Age'],
-            bins=jnp.array([0, 4, 13, 18, 30, 45, 60, 120]),  # Changed bin edges
+            bins=jnp.array([0, 4, 13, 18, 30, 45, 60, 120]
+                           ),  # Changed bin edges
             right=True
         )
         engineered_data['AgeGroup'] = age_groups
 
         # One-hot encode Age Groups
-        age_groups_one_hot = jax.nn.one_hot(age_groups, num_classes=8)  # Changed num_classes to 8
-        engineered_data['AgeGroup_Baby'] = age_groups_one_hot[:, 0]  # Added a specific label for babies
+        age_groups_one_hot = jax.nn.one_hot(
+            age_groups, num_classes=8)  # Changed num_classes to 8
+        # Added a specific label for babies
+        engineered_data['AgeGroup_Baby'] = age_groups_one_hot[:, 0]
         engineered_data['AgeGroup_Child'] = age_groups_one_hot[:, 1]
         engineered_data['AgeGroup_Teenager'] = age_groups_one_hot[:, 2]
         engineered_data['AgeGroup_YoungAdult'] = age_groups_one_hot[:, 3]
         engineered_data['AgeGroup_Adult'] = age_groups_one_hot[:, 4]
-        engineered_data['AgeGroup_MiddleAged'] = age_groups_one_hot[:, 5]  # Added a label for middle-aged
+        # Added a label for middle-aged
+        engineered_data['AgeGroup_MiddleAged'] = age_groups_one_hot[:, 5]
         engineered_data['AgeGroup_Senior'] = age_groups_one_hot[:, 6]
-        engineered_data['AgeGroup_Unknown'] = age_groups_one_hot[:, 7]  # Assuming 7 represents an unknown group
+        # Assuming 7 represents an unknown group
+        engineered_data['AgeGroup_Unknown'] = age_groups_one_hot[:, 7]
         del engineered_data['AgeGroup']
 
     # --- 7. Family Size and Is Alone (Existing Features) ---
     if 'SibSp' in engineered_data and 'Parch' in engineered_data:
-        engineered_data['FamilySize'] = engineered_data['SibSp'] + engineered_data['Parch'] + 1
-        engineered_data['IsAlone'] = jnp.where(engineered_data['FamilySize'] == 1, 1, 0)
+        engineered_data['FamilySize'] = engineered_data['SibSp'] + \
+            engineered_data['Parch'] + 1
+        engineered_data['IsAlone'] = jnp.where(
+            engineered_data['FamilySize'] == 1, 1, 0)
 
     return engineered_data
 
 # --- Model (Logistic Regression) ---
 
+
 def sigmoid(z):
     return 1 / (1 + jnp.exp(-z))
+
 
 def predict(weights, biases, features):
     z = jnp.dot(features, weights) + biases
     return sigmoid(z)
+
 
 def binary_cross_entropy_loss(weights, biases, features, labels, l2_lambda=0.0):
     probabilities = predict(weights, biases, features)
@@ -237,6 +266,7 @@ def binary_cross_entropy_loss(weights, biases, features, labels, l2_lambda=0.0):
     loss += l2_penalty
 
     return loss
+
 
 def update(weights, biases, features, labels, learning_rate, l2_lambda=0.0):
     probabilities = predict(weights, biases, features)
@@ -251,6 +281,7 @@ def update(weights, biases, features, labels, learning_rate, l2_lambda=0.0):
     return weights_new, biases_new
 
 # --- Training ---
+
 
 def train_model(data, learning_rate, num_epochs, l2_lambda, feature_cols):
     """Trains the logistic regression model.
@@ -308,6 +339,7 @@ def train_model(data, learning_rate, num_epochs, l2_lambda, feature_cols):
 
 # --- Evaluation ---
 
+
 def evaluate_model(weights, biases, features, labels):
     """Evaluates the model's accuracy.
 
@@ -327,6 +359,7 @@ def evaluate_model(weights, biases, features, labels):
     return accuracy
 
 # --- Cross-Validation ---
+
 
 def cross_validate(data, learning_rate, num_epochs, l2_lambda, feature_cols, n_splits=5):
     """Performs k-fold cross-validation.
@@ -384,6 +417,7 @@ def cross_validate(data, learning_rate, num_epochs, l2_lambda, feature_cols, n_s
     print(f"Average Cross-Validation Accuracy: {avg_accuracy:.4f}")
     return avg_accuracy
 
+
 def train_model_kfold(data, learning_rate, num_epochs, l2_lambda, weights, biases, train_features, train_labels, feature_cols):
     # Training loop
     for epoch in range(num_epochs):
@@ -393,6 +427,7 @@ def train_model_kfold(data, learning_rate, num_epochs, l2_lambda, weights, biase
     return weights, biases
 
 # --- Visualization ---
+
 
 def visualize_data(data):
     """Creates some basic visualizations of the data."""
@@ -410,8 +445,10 @@ def visualize_data(data):
 
     # Example: Age distribution of survivors vs. non-survivors
     plt.figure()
-    plt.hist(df['Age'][df['Survived'] == 0], bins=20, alpha=0.5, label="Did not survive")
-    plt.hist(df['Age'][df['Survived'] == 1], bins=20, alpha=0.5, label="Survived")
+    plt.hist(df['Age'][df['Survived'] == 0], bins=20,
+             alpha=0.5, label="Did not survive")
+    plt.hist(df['Age'][df['Survived'] == 1],
+             bins=20, alpha=0.5, label="Survived")
     plt.xlabel("Age")
     plt.ylabel("Number of Passengers")
     plt.title("Age Distribution of Survivors vs. Non-Survivors")
@@ -420,6 +457,7 @@ def visualize_data(data):
 
 # --- Main ---
 
+
 if __name__ == "__main__":
     data = load_titanic_data("./data/train.csv")
     processed_data = preprocess_data(data)
@@ -427,7 +465,8 @@ if __name__ == "__main__":
 
     # Convert engineered data to pandas DataFrame for visualization
     engineered_df = pd.DataFrame({
-        col: (engineered_data[col] if isinstance(engineered_data[col], list) else engineered_data[col].tolist())
+        col: (engineered_data[col] if isinstance(
+            engineered_data[col], list) else engineered_data[col].tolist())
         for col in engineered_data
         if col in ['Pclass', 'Survived', 'Age', 'SibSp', 'Parch', 'Fare', 'FamilySize', 'IsAlone', 'FarePerPerson', 'IsChildMother'] or 'Title_' in col or 'Embarked_' in col or 'AgeGroup_' in col or 'CabinDeck_' in col or 'TicketPrefix_' in col
     })
@@ -449,10 +488,12 @@ if __name__ == "__main__":
         'Title_Mr', 'Title_Miss', 'Title_Mrs', 'Title_Master', 'Title_Royalty', 'Title_Officer', 'Title_Rare',
         'AgeGroup_Baby', 'AgeGroup_Child', 'AgeGroup_Teenager', 'AgeGroup_YoungAdult', 'AgeGroup_Adult', 'AgeGroup_MiddleAged', 'AgeGroup_Senior', 'AgeGroup_Unknown',
     ]
-    
+
     # Dynamically add CabinDeck and TicketPrefix features if they exist
-    cabin_deck_features = [col for col in engineered_data.keys() if col.startswith('CabinDeck_')]
-    ticket_prefix_features = [col for col in engineered_data.keys() if col.startswith('TicketPrefix_')]
+    cabin_deck_features = [
+        col for col in engineered_data.keys() if col.startswith('CabinDeck_')]
+    ticket_prefix_features = [
+        col for col in engineered_data.keys() if col.startswith('TicketPrefix_')]
     feature_cols.extend(cabin_deck_features)
     feature_cols.extend(ticket_prefix_features)
 
